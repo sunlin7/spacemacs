@@ -28,6 +28,7 @@
   :prefix 'spacemacs-)
 
 (require 'subr-x nil 'noerror)
+(require 'core-load-paths)
 (require 'core-emacs-backports)
 (require 'core-env)
 (require 'page-break-lines)
