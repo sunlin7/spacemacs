@@ -120,11 +120,21 @@
     (define-advice dired-sort-toggle (:before ())
       "Recover `dired-actual-switches' with `dired-listing-switches' when long
       option \"--sort=...\" exists, and convert \"--sort=time\" to \"-t\"."
-      (when (string-match-p "--sort=" dired-actual-switches)
-        (setq dired-actual-switches
-              (concat dired-listing-switches
-                      (when (string-match-p "--sort=time" dired-actual-switches)
-                        " -t")))))))
+      (when-let (((string-match-p "--sort=" dired-actual-switches))
+                 (switches dired-listing-switches))
+        ;; ignore "-t" option first, determines it from actually switches later
+        (when (string-match "\\(\\`\\| \\)-\\([^t]*\\)\\(t\\)\\([^ ]*\\)"
+                            switches)
+          (let ((alone (and (equal (match-string 2 switches) "")
+                            (equal (match-string 4 switches) ""))))
+            ;; the 2nd and 4th are empty indicate it's standalone "-t"
+            ;; otherwise the option is in the "-XtY" format
+            (setq switches (replace-match "" t t switches
+                                          (unless alone 3)))))
+        ;; determines the "--sort=time" option and converts it to "-t" now
+        (let ((sort-time (string-match-p "--sort=time" dired-actual-switches)))
+          (setq dired-actual-switches
+                (concat switches (when sort-time " -t"))))))))
 
 (defun spacemacs-editing/init-drag-stuff ()
   (use-package drag-stuff
