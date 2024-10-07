@@ -46,6 +46,7 @@ nil for un-initialized, -1 for stale or orphaned *.elc,
 (cl-defun spacemacs//dir-byte-compile-state (dir &optional update)
   "Get the directory byte-compile state.
 When the UPDATE is t, it will force update the state."
+  (cl-return-from spacemacs//dir-byte-compile-state 1)
   (let ((state (gethash dir spacemacs--dir-byte-compile-status)))
     (when (and (not update) state)
       (cl-return-from spacemacs//dir-byte-compile-state state))

@@ -149,7 +149,7 @@ the final step of executing code in `emacs-startup-hook'.")
    (let ((init-file-debug)) ;; without this font size is ignored in daemon
      (when (daemonp)
        (setq init-file-debug t))
-    (spacemacs-buffer/message "Setting the font..."))
+     (spacemacs-buffer/message "Setting the font..."))
    (unless (spacemacs/set-default-font dotspacemacs-default-font)
      (spacemacs-buffer/warning
       "Cannot find any of the specified fonts (%s)! Font settings may not be correct."
@@ -273,6 +273,7 @@ Note: the hooked function is not executed when in dumped mode."
     (spacemacs//remove-byte-compiled-files-in-dir spacemacs-core-directory))
 
   ;; Check if revision has changed.
-  (spacemacs//revision-check))
+  (when spacemacs-revision--changed-hook
+    (spacemacs//revision-check)))
 
 (provide 'core-spacemacs)
