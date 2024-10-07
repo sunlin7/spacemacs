@@ -244,23 +244,23 @@ the final step of executing code in `emacs-startup-hook'.")
   (spacemacs/load-default-theme)
   ;; font
   (spacemacs|do-after-display-system-init
-    ;; If you are thinking to remove this call to `message', think twice. You'll
-    ;; break the life of several Spacemacser using Emacs in daemon mode. Without
-    ;; this, their chosen font will not be set on the *first* instance of
-    ;; emacsclient, at least if different than their system font. You don't
-    ;; believe me? Go ahead, try it. After you'll have notice that this was true,
-    ;; increase the counter bellow so next people will give it more confidence.
-    ;; Counter = 1
-    (let ((init-file-debug)) ;; without this font size is ignored in daemon
-      (when (daemonp)
-        (setq init-file-debug t))
-      (spacemacs-buffer/message "Setting the font..."))
-    (unless (spacemacs/set-default-font dotspacemacs-default-font)
-      (spacemacs-buffer/warning
-       "Cannot find any of the specified fonts (%s)! Font settings may not be correct."
-       (if (listp (car dotspacemacs-default-font))
-           (mapconcat 'car dotspacemacs-default-font ", ")
-         (car dotspacemacs-default-font)))))
+   ;; If you are thinking to remove this call to `message', think twice. You'll
+   ;; break the life of several Spacemacser using Emacs in daemon mode. Without
+   ;; this, their chosen font will not be set on the *first* instance of
+   ;; emacsclient, at least if different than their system font. You don't
+   ;; believe me? Go ahead, try it. After you'll have notice that this was true,
+   ;; increase the counter bellow so next people will give it more confidence.
+   ;; Counter = 1
+   (let ((init-file-debug)) ;; without this font size is ignored in daemon
+     (when (daemonp)
+       (setq init-file-debug t))
+     (spacemacs-buffer/message "Setting the font..."))
+   (unless (spacemacs/set-default-font dotspacemacs-default-font)
+     (spacemacs-buffer/warning
+      "Cannot find any of the specified fonts (%s)! Font settings may not be correct."
+      (if (listp (car dotspacemacs-default-font))
+          (mapconcat 'car dotspacemacs-default-font ", ")
+        (car dotspacemacs-default-font)))))
   ;; spacemacs init
   (setq inhibit-startup-screen t)
 
@@ -383,6 +383,7 @@ Note: the hooked function is not executed when in dumped mode."
     (spacemacs//remove-byte-compiled-files-in-dir spacemacs-core-directory))
 
   ;; Check if revision has changed.
-  (spacemacs//revision-check))
+  (when spacemacs-revision--changed-hook
+    (spacemacs//revision-check)))
 
 (provide 'core-spacemacs)
