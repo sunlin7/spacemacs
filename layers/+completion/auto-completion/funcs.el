@@ -344,8 +344,9 @@ MODE parameter must match the :modes values used in the call to
 ;; Yasnippet
 
 (defun spacemacs/load-yasnippet ()
-  (unless yas-global-mode (yas-global-mode 1))
-  (yas-minor-mode 1))
+  (spacemacs|deferred-run-in-buffer
+   (unless yas-global-mode (yas-global-mode 1))
+   (yas-minor-mode 1)))
 
 (defun spacemacs/force-yasnippet-off ()
   (yas-minor-mode -1)
