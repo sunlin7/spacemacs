@@ -149,11 +149,9 @@
     :defer t
     :init
     (spacemacs/set-leader-keys "gv=" 'diff-hl-diff-goto-hunk)
-    (if version-control-global-margin
-        (progn
-          (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
-          (run-with-idle-timer 1 nil 'global-diff-hl-mode))
-      (run-with-idle-timer 1 nil 'diff-hl-margin-mode))
+    (when version-control-global-margin
+      (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+      (run-with-idle-timer 1 nil 'global-diff-hl-mode))
     :config
     (spacemacs|do-after-display-system-init
      (setq diff-hl-side (if (eq version-control-diff-side 'left)
